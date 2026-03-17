@@ -36,7 +36,8 @@ Each app is its own Docker container with its own `docker-compose.yml`, proxied 
 | 8770 | mppaint (Multiplayer Paint) | Docker |
 | 8771 | tetris | Docker |
 | 8772 | brick (Brick Breaker) | Docker |
-| **8773+** | **next available** | — |
+| 8773 | minesweeper (Win95 Minesweeper) | Docker |
+| **8774+** | **next available** | — |
 
 ---
 
@@ -271,6 +272,7 @@ sebland.com DNS goes through Cloudflare. SSL mode is Full (strict). Bot fight mo
 | tetris | Static single-file | nginx:alpine | No | No |
 | brick | Static + build | node:22-alpine → nginx:alpine | Yes (esbuild) | Yes (dist/bundle.js) |
 | mppaint | WebSocket server | bun:1-alpine | No | No |
+| minesweeper | Static single-file | nginx:alpine | No | No |
 | mptodo | API server | python:3.12-slim | Yes (bun/vite) | Yes |
 
 ---
