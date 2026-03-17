@@ -16,7 +16,9 @@ Internet
         ├── sebland.com/paint*    → paint container (port 8769)
         ├── sebland.com/mppaint*  → mppaint container (port 8770)
         ├── sebland.com/tetris*   → tetris container (port 8771)
-        └── sebland.com/brick*    → brick container (port 8772)
+        ├── sebland.com/brick*    → brick container (port 8772)
+        ├── sebland.com/minesweeper* → minesweeper container (port 8773)
+        └── sebland.com/snake*    → snake container (port 8774)
 ```
 
 Each app is its own Docker container with its own `docker-compose.yml`, proxied by Caddy in `box/app/Caddyfile`. Caddy auto-provisions HTTPS. DNS goes through Cloudflare (Full strict SSL).
@@ -37,7 +39,8 @@ Each app is its own Docker container with its own `docker-compose.yml`, proxied 
 | 8771 | tetris | Docker |
 | 8772 | brick (Brick Breaker) | Docker |
 | 8773 | minesweeper (Win95 Minesweeper) | Docker |
-| **8774+** | **next available** | — |
+| 8774 | snake (Nokia Snake) | Docker |
+| **8775+** | **next available** | — |
 
 ---
 
@@ -48,7 +51,7 @@ gh repo create sammcgrail/<app-name> --public --clone
 cd /root/<app-name>
 git commit --allow-empty -m "init"
 git push origin main
-gh repo add-collaborator sammcgrail/<app-name> svenflow --permission push
+gh api repos/sammcgrail/<app-name>/collaborators/svenflow -X PUT -f permission=push
 ```
 
 ## Step 2: Required files
@@ -189,7 +192,17 @@ cd /root/box
 docker compose build web && docker compose up -d web
 ```
 
-## Step 5: Verify
+## Step 5: Post-deploy
+
+```bash
+# Add container to seb status page
+# Edit /root/seb/services/status/server.py → app_containers list
+# Then restart: systemctl --user restart seb-status
+
+# Commit all changes (Caddyfile in box repo, status page in seb repo, app repo)
+```
+
+## Step 6: Verify
 
 ```bash
 # Should return 200
@@ -273,6 +286,7 @@ sebland.com DNS goes through Cloudflare. SSL mode is Full (strict). Bot fight mo
 | brick | Static + build | node:22-alpine → nginx:alpine | Yes (esbuild) | Yes (dist/bundle.js) |
 | mppaint | WebSocket server | bun:1-alpine | No | No |
 | minesweeper | Static single-file | nginx:alpine | No | No |
+| snake | Static single-file | nginx:alpine | No | No |
 | mptodo | API server | python:3.12-slim | Yes (bun/vite) | Yes |
 
 ---
