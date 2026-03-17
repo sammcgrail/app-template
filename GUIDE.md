@@ -27,20 +27,19 @@ Each app is its own Docker container with its own `docker-compose.yml`, proxied 
 
 ## Port Registry
 
+The Caddyfile (`/root/box/app/Caddyfile`) is the **source of truth** for port assignments.
+
+To find the next available port:
+```bash
+grep -oP 'host\.docker\.internal:\K\d+' /root/box/app/Caddyfile | sort -n | tail -1
+# Take the result and add 1
+```
+
+Reserved ports (not in Caddyfile):
 | Port | Service | Type |
 |------|---------|------|
 | 80, 443 | Caddy (TLS, routing) | Docker (box-web-1) |
 | 6001 | signal-cli REST API | Docker (127.0.0.1 only) |
-| 8765 | seb-status dashboard | systemd (not Docker) |
-| 8767 | mptodo | Docker (box-mptodo-1) |
-| 8768 | ascii (Game of Life) | Docker |
-| 8769 | paint (MSPaint clone) | Docker |
-| 8770 | mppaint (Multiplayer Paint) | Docker |
-| 8771 | tetris | Docker |
-| 8772 | brick (Brick Breaker) | Docker |
-| 8773 | minesweeper (Win95 Minesweeper) | Docker |
-| 8774 | snake (Nokia Snake) | Docker |
-| **8775+** | **next available** | — |
 
 ---
 
